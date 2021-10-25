@@ -74,8 +74,6 @@ app.delete('/api/notes/:id', (req, res) => {
   });
 });
 
-app.get('')
-
 app.get('*', (req, res) => {
   res.sendFile('/public/index.html', options, logger('get', req.path, '/public/index.html'));
 });
