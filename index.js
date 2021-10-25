@@ -29,7 +29,7 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
   console.log(req.body);
-  let uuid = new uuidv4();
+  let uuid = uuidv4();
   console.log(`Created uuidv4: ${uuid}`);
   const newNote = {...req.body, id: uuid};
   fs.readFile('db/db.json', 'utf-8', (err, data) => {
