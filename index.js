@@ -50,6 +50,28 @@ app.post('/api/notes', (req, res) => {
 });
 
 app.delete('/api/notes/:id', (req, res) => {
+  console.log(`delete ${req.params.id}`);
+  fs.readFile('db/db.json', 'utf-8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).end('{}');
+    } else {
+      let db = JSON.parse(data)
+      let id = req.params.id;
+      if (db.find(obj => obj.id === id) === -1) {
+        res.status(404).end({});
+      } else {
+        let newDb = JSON.stringify(db.filter(obj => obj.id !== id));
+        console.log(`new database: ${newDb}`);
+        fs.writeFile('db/db.json', newDb, (err) => {
+          if (err) {
+            res.status(500);
+          }
+          res.end('{}');
+        });
+      }
+    }
+  });
 });
 
 app.get('')
