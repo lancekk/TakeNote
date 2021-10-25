@@ -29,8 +29,24 @@ app.get('/api/notes', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
   console.log(req.body);
-  let id = new uuidv4();
-  console.log(`Created uuidv4: ${id}`);
+  let uuid = new uuidv4();
+  console.log(`Created uuidv4: ${uuid}`);
+  const newNote = {...req.body, id: uuid};
+  fs.readFile('db/db.json', 'utf-8', (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500);
+    }
+    let db = JSON.parse(data);
+    db.push(newNote);
+    let newDb = JSON.stringify(db);
+    fs.writeFile('db/db.json', newDb, (err) => {
+      if (err) {
+        res.status(500);
+      }
+      res.end(JSON.stringify(newNote));
+    });
+  });
 });
 
 app.delete('/api/notes/:id', (req, res) => {
